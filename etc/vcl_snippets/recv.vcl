@@ -27,10 +27,27 @@
     }
     
     # User's Cookie may contain some Magento Vary items we should vary on
-    if (req.http.cookie:X-Magento-Vary ) {
+    if (req.http.cookie:X-Magento-Vary) {
         set req.http.X-Magento-Vary = req.http.cookie:X-Magento-Vary;
     } else {
         unset req.http.X-Magento-Vary;
+    }
+
+    if (req.url ~ "/graphql") {
+        if (req.http.Store) {
+            if (req.http.cookie:X-Magento-Vary) {
+                set req.http.X-Magento-Vary = req.http.X-Magento-Vary req.http.Store;
+            } else {
+                set req.http.X-Magento-Vary = req.http.Store;
+            }
+        }
+        if (req.http.Content-Currency) {
+            if (req.http.cookie:X-Magento-Vary) {
+                set req.http.X-Magento-Vary = req.http.X-Magento-Vary req.http.Content-Currency;
+            } else {
+                set req.http.X-Magento-Vary = req.http.Store;
+            }
+        }
     }
 
     ############################################################################################################
