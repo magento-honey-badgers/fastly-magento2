@@ -18,6 +18,7 @@
         unset req.http.X-Magento-Vary;
     }
 
+    # GraphQl special headers handling because this area doesn't rely on X-Magento-Vary cookie
     if (req.url ~ "/graphql" && req.request == "GET") {
         if (req.http.Store) {
             if (req.http.X-Magento-Vary) {
@@ -32,6 +33,11 @@
             } else {
                 set req.http.X-Magento-Vary = req.http.Content-Currency;
             }
+        }
+        # GraphQl doesn't cache yet the logged in customer queries
+            if (req.url ~ "/graphql" && req.request == "GET") {
+        if (req.http.Authorization) {
+            set req.http.x-pass = "1";
         }
     }
 
