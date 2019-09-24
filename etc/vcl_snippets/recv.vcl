@@ -18,7 +18,7 @@
         unset req.http.X-Magento-Vary;
     }
 
-    if (req.url ~ "/graphql") {
+    if (req.url ~ "/graphql" && req.request == "GET") {
         if (req.http.Store) {
             if (req.http.X-Magento-Vary) {
                 set req.http.X-Magento-Vary = req.http.X-Magento-Vary req.http.Store;
