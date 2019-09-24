@@ -111,12 +111,12 @@
 
         if (req.url ~ "/graphql") {
             if (req.http.Store) {
-                set beresp.http.Surrogate-Key = beresp.http.Surrogate-Key " Store-"
-                set beresp.http.Surrogate-Key = beresp.http.Surrogate-Key req.http.Store
+                set beresp.http.Surrogate-Key = beresp.http.Surrogate-Key " Store-";
+                set beresp.http.Surrogate-Key = beresp.http.Surrogate-Key req.http.Store;
             }
             if (req.http.Content-Currency) {
-                set beresp.http.Surrogate-Key = beresp.http.Surrogate-Key " Content-Currency-"
-                set beresp.http.Surrogate-Key = beresp.http.Surrogate-Key req.http.Content-Currency
+                set beresp.http.Surrogate-Key = beresp.http.Surrogate-Key " Content-Currency-";
+                set beresp.http.Surrogate-Key = beresp.http.Surrogate-Key req.http.Content-Currency;
             }
         }
 
