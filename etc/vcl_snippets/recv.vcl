@@ -130,6 +130,6 @@
     }
 
     # GraphQl doesn't yet cache the authenticated/logged-in customer queries
-    if (req.request == "GET" && req.url.path ~ "/graphql" && req.url.qs ~ "query=" && req.http.Authorization ~ "^Bearer") {
+    if (req.request == "GET" && req.url.path ~ "/graphql" && req.http.Authorization ~ "^Bearer") {
         set req.http.x-pass = "1";
     }
