@@ -34,10 +34,6 @@
                 set req.http.X-Magento-Vary = req.http.Content-Currency;
             }
         }
-        # GraphQl doesn't cache yet the logged in customer queries
-        if (req.http.Authorization) {
-            set req.http.x-pass = "1";
-        }
     }
 
     ############################################################################################################
@@ -131,4 +127,11 @@
     if (req.http.x-long-cache || req.url ~ "^/(pub/)?(media|static)/.*") {
         unset req.http.Https;
         unset req.http.Cookie;
+    }
+
+    # GraphQl doesn't cache yet the logged in customer queries
+    if ( req.request == "GET" && req.url.path ~ "/graphql" ) {
+        if (req.http.Authorization) {
+            set req.http.x-pass = "1";
+        }
     }
