@@ -19,7 +19,7 @@
     }
 
     # GraphQl special headers handling because this area doesn't rely on X-Magento-Vary cookie
-    if (req.url ~ "/graphql" && req.request == "GET") {
+    if (req.url ~ "/graphql" && req.request == "GET" && req.http.Content-Type ~ "application\/json") {
         if (req.http.Store) {
             if (req.http.X-Magento-Vary) {
                 set req.http.X-Magento-Vary = req.http.X-Magento-Vary req.http.Store;
@@ -129,9 +129,7 @@
         unset req.http.Cookie;
     }
 
-    # GraphQl doesn't cache yet the logged in customer queries
-    if ( req.request == "GET" && req.url.path ~ "/graphql" ) {
-        if (req.http.Authorization) {
-            set req.http.x-pass = "1";
-        }
+    # GraphQl doesn't yet cache the authenticated/logged-in customer queries
+    if (req.request == "GET" && req.url.path ~ "/graphql" && req.http.Content-Type ~ "application\/json" && req.url.qs ~ "query=" && req.http.Authorization ~ "^Bearer") {
+        set req.http.x-pass = "1";
     }
